@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             super.onPlaybackStateChanged(state);
             Log.i("TAGF", "onPlaybackStateChanged");
+            //可以控制UI的seekBar进度
         }
 
         @Override

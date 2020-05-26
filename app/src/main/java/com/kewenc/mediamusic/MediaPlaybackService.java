@@ -18,6 +18,8 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
+import android.view.KeyEvent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -56,6 +58,7 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
         mediaSession.setPlaybackState(stateBuilder.build());
 
         mediaSession.setCallback(new MediaSessionCallback());
+//        mediaSession.setMediaButtonReceiver();
         setSessionToken(mediaSession.getSessionToken());
 
         mMediaNotificationManager = new MediaNotificationManager(this);
@@ -95,7 +98,29 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
 //        private int mQueueIndex = -1;
         private MediaMetadataCompat mPreparedMedia;
 
+        @Override
+        public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
+            Log.i("TAGF","onMediaButtonEvent");
+            KeyEvent keyEvent = mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+            if (keyEvent != null) {
+                int keyCode = keyEvent.getKeyCode();
+                int count = keyEvent.getRepeatCount();
+                Log.i("TAGF", "keyCode="+keyCode + "_count="+count);
+            }
 
+
+            return super.onMediaButtonEvent(mediaButtonEvent);//headsethook
+        }
+
+        @Override
+        public void onSkipToNext() {
+            super.onSkipToNext();
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            super.onSkipToPrevious();
+        }
 
         @Override
         public void onPlay() {
