@@ -1,18 +1,13 @@
 package com.kewenc.mediamusic;
 
 import android.app.Notification;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -25,9 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.media.MediaBrowserServiceCompat;
 
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -92,24 +84,35 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
 //
 //    private AudioFocusRequest audioFocusRequest;
 
-    private class MediaSessionCallback extends MediaSessionCompat.Callback {
+    private class MediaSessionCallback extends MediaSessionCompat.Callback implements MediaButtonIntent {
 
 //        private final List<MediaSessionCompat.QueueItem> mPlaylist = new ArrayList<>();
 //        private int mQueueIndex = -1;
         private MediaMetadataCompat mPreparedMedia;
+        private MediaButtonEventIntent mediaButtonEventIntent = new MediaButtonEventIntent();
+
+        MediaSessionCallback() {
+            mediaButtonEventIntent.setCallBack(this);
+        }
 
         @Override
         public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
-            Log.i("TAGF","onMediaButtonEvent");
-            KeyEvent keyEvent = mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
-            if (keyEvent != null) {
-                int keyCode = keyEvent.getKeyCode();
-                int count = keyEvent.getRepeatCount();
-                Log.i("TAGF", "keyCode="+keyCode + "_count="+count);
-            }
-
-
-            return super.onMediaButtonEvent(mediaButtonEvent);//headsethook
+            return mediaButtonEventIntent.handleIntent(mediaButtonEvent);
+//            Log.i("TAGF","onMediaButtonEvent");
+//            KeyEvent keyEvent = mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+//            if (keyEvent != null) {
+//                int keyCode = keyEvent.getKeyCode();
+//                KeyEvent.KEYCODE_MEDIA_PREVIOUS
+//                int count = keyEvent.getRepeatCount();
+//                Log.i("TAGF", "keyCode="+keyCode + "_count="+count);
+//
+////                keyEvent.getAction();
+//            }
+//
+//
+//            boolean gg = super.onMediaButtonEvent(mediaButtonEvent);//headsethook
+//            Log.i("TAGF", "gg="+ gg);
+//            return gg;
         }
 
         @Override
@@ -221,6 +224,42 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
             setNewState(PlaybackStateCompat.STATE_STOPPED);
             release();
         }
+
+        @Override
+        public void onOneTap() {
+            Log.i("TAGF", "onOneTap");
+            if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+                onPause();
+            } else {
+                onPlay();
+            }
+        }
+
+        @Override
+        public void onDoubleTap() {
+            Log.i("TAGF", "onDoubleTap");
+        }
+
+        @Override
+        public void onThreeTap() {
+            Log.i("TAGF", "onThreeTap");
+        }
+
+        @Override
+        public void onPlayPause() {
+            Log.i("TAGF", "onPlayPause");
+        }
+
+        @Override
+        public void onNextAction() {
+            Log.i("TAGF", "onNextAction");
+        }
+
+        @Override
+        public void onPreviousAction() {
+            Log.i("TAGF", "onPreviousAction");
+        }
+
     }
 
     private void release() {
