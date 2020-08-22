@@ -2,9 +2,11 @@ package com.kewenc.mediamusic;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.media.MediaMetadata;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
@@ -34,11 +36,17 @@ public class MainActivity extends AppCompatActivity {
             Log.i("TAGF", "onMetadataChanged");
         }
     };
+//    private BroadcastReceiver mediaButtonIntentReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        mediaButtonIntentReceiver = new MediaButtonIntentReceiver();
+//        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction(Intent.ACTION_MEDIA_BUTTON);
+//        registerReceiver(mediaButtonIntentReceiver, intentFilter);
 
         mediaBrowser = new MediaBrowserCompat(this,
                 new ComponentName(this, MediaPlaybackService.class),
@@ -66,6 +74,12 @@ public class MainActivity extends AppCompatActivity {
         }
         mediaBrowser.disconnect();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        unregisterReceiver(mediaButtonIntentReceiver);
     }
 
     private final MediaBrowserCompat.ConnectionCallback connectionCallbacks = new MediaBrowserCompat.ConnectionCallback() {

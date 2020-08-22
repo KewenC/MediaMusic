@@ -28,6 +28,36 @@
                 <action android:name="android.media.browse.MediaBrowserService"/>
             </intent-filter>
         </service>
+
+        <!--
+     MediaSession, prior to API 21, uses a broadcast receiver to communicate with a
+     media session. It does not have to be this broadcast receiver, but it must
+     handle the action "android.intent.action.MEDIA_BUTTON".
+
+     Additionally, this is used to resume the service from an inactive state upon
+     receiving a media button event (such as "play").
+-->
+<!--        <receiver android:name="android.support.v4.media.session.MediaButtonReceiver">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MEDIA_BUTTON"/>-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+
+<!--        <receiver android:name=".MediaButtonIntentReceiver">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
+<!--                <action android:name="android.media.AUDIO_BECOMING_NOISY" />-->
+<!--                <action android:name="android.intent.action.BOOT_COMPLETED" />-->
+<!--                &lt;!&ndash;<action android:name="android.intent.action.HEADSET_PLUG"/>&ndash;&gt;-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+
+        <receiver android:name="androidx.media.session.MediaButtonReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

@@ -118,11 +118,13 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSkipToNext() {
             super.onSkipToNext();
+            Log.i("TAGF", "onSkipToNext");
         }
 
         @Override
         public void onSkipToPrevious() {
             super.onSkipToPrevious();
+            Log.i("TAGF", "onSkipToPrevious");
         }
 
         @Override

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 
 public class MediaButtonEventIntent extends AbstractMediaButtonEvent {
@@ -65,17 +66,27 @@ public class MediaButtonEventIntent extends AbstractMediaButtonEvent {
             KeyEvent event = (KeyEvent) mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
             if (event == null) return false;
             int keycode = event.getKeyCode();
+            Log.i("TAGF","keycode="+keycode);
             int action = event.getAction();
             if (action == KeyEvent.ACTION_DOWN) {
                 if (keycode == KeyEvent.KEYCODE_MEDIA_PREVIOUS) {
                     mHandler.sendEmptyMessage(MSG_MUSIC_PREVIOUS);
-                } else if (keycode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+                }
+                else if (keycode == KeyEvent.KEYCODE_MEDIA_NEXT) {
                     mHandler.sendEmptyMessage(MSG_MUSIC_NEXT);
-                } else if (keycode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
+                }
+                else if (keycode == KeyEvent.KEYCODE_MEDIA_PLAY) {
+
+                }
+                else if (keycode == KeyEvent.KEYCODE_MEDIA_PAUSE) {
+
+                }
+                else if (keycode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
                     if (mediaButtonIntent != null) {
                         mediaButtonIntent.onPlayPause();
                     }
-                } else {
+                }
+                else {
                     buttonClick();
                 }
                 return true;
