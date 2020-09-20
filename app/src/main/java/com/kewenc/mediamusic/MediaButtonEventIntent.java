@@ -14,6 +14,8 @@ public class MediaButtonEventIntent extends AbstractMediaButtonEvent {
     private static final int MSG_PERFORM_OPERATION = 2;
     private static final int MSG_MUSIC_NEXT = 3;
     private static final int MSG_MUSIC_PREVIOUS = 4;
+    private static final int MSG_MUSIC_PLAY = 5;
+    private static final int MSG_MUSIC_PAUSE = 6;
     private static int mNumber = 0;//点击次数
     private static long mSaveTime = 0;//
     private int SPACE_TIME = 800;//两次点击之前的最大间隔时间
@@ -51,6 +53,16 @@ public class MediaButtonEventIntent extends AbstractMediaButtonEvent {
                         mediaButtonIntent.onPreviousAction();
                     }
                     break;
+                case MSG_MUSIC_PLAY:
+                    if (mediaButtonIntent != null) {
+                        mediaButtonIntent.onPlayAction();
+                    }
+                    break;
+                case MSG_MUSIC_PAUSE:
+                    if (mediaButtonIntent != null) {
+                        mediaButtonIntent.onPauseAction();
+                    }
+                    break;
             }
         }
     };
@@ -76,10 +88,10 @@ public class MediaButtonEventIntent extends AbstractMediaButtonEvent {
                     mHandler.sendEmptyMessage(MSG_MUSIC_NEXT);
                 }
                 else if (keycode == KeyEvent.KEYCODE_MEDIA_PLAY) {
-
+                    mHandler.sendEmptyMessage(MSG_MUSIC_PLAY);
                 }
                 else if (keycode == KeyEvent.KEYCODE_MEDIA_PAUSE) {
-
+                    mHandler.sendEmptyMessage(MSG_MUSIC_PAUSE);
                 }
                 else if (keycode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
                     if (mediaButtonIntent != null) {

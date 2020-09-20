@@ -14,4 +14,8 @@ public interface MediaButtonIntent {
 
     void onPreviousAction();
 
+    void onPlayAction();
+
+    void onPauseAction();
+
 }

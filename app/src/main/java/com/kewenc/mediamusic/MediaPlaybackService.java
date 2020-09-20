@@ -262,6 +262,16 @@ public class MediaPlaybackService extends MediaBrowserServiceCompat {
             Log.i("TAGF", "onPreviousAction");
         }
 
+        @Override
+        public void onPlayAction() {
+            onPlay();
+        }
+
+        @Override
+        public void onPauseAction() {
+            onPause();
+        }
+
     }
 
     private void release() {
